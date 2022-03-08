@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/haoyan/GAMES101/pa0/pa0/main.cpp
+/home/haoyan/GAMES101/pa0/main.cpp
 cmath
 -
 eigen3/Eigen/Core

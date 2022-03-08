@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/haoyan/GAMES101/pa0/pa0/main.cpp" "/home/haoyan/GAMES101/pa0/pa0/build/CMakeFiles/Transformation.dir/main.cpp.o"
+  "/home/haoyan/GAMES101/pa0/main.cpp" "/home/haoyan/GAMES101/pa0/build/CMakeFiles/Transformation.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
