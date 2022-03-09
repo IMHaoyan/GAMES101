@@ -50,9 +50,13 @@ int main(){
     cout<<P<<endl;
     cout<<"Rotated 45:"<<endl;
     P=r*P;
-    cout<<P<<endl;
+    cout<<P<<endl<<endl;
     cout<<"Paced (1,2):"<<endl;
     P=P+i;
-    cout<<P<<endl;
+    cout<<P<<endl<<endl;
+    Vector3f p(2,1,1);
+    Matrix3f q;
+    q<<cos(acos(-1)*theta/180),-sin(acos(-1)*theta/180),1,sin(acos(-1)*theta/180),cos(acos(-1)*theta/180),2,0,0,1;
+    cout<<q*p<<endl;
     return 0;
 }
