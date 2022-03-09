@@ -5,6 +5,7 @@
 using namespace std;
 using namespace Eigen;
 int main(){
+    /*
     cout << "Example of cpp \n";
     float a = 1.0, b = 2.0;
     cout << a << endl;
@@ -13,12 +14,9 @@ int main(){
     cout << acos(-1) << endl;
     cout << sin(30.0/180.0*acos(-1)) << endl;
 
-    // Example of vector
     cout << "Example of vector \n";
-    // vector definition
     Vector3f v(1.0f,2.0f,3.0f);
     Vector3f w(1.0f,0.0f,0.0f);
-    // vector output
     cout << "Example of output \n";
     cout << v << endl;
     // vector add
@@ -43,8 +41,18 @@ int main(){
     // matrix scalar multiply i * 2.0
     // matrix multiply i * j
     // matrix multiply vector i * v
-    cout<<endl;
-    Vector2f x(1,2),y(1,2);
-    cout<<x+y<<endl;
+    cout<<endl;*/
+    Vector2f P(2,1),i(1,2);
+    Matrix2f r;
+    float theta=45;
+    r<<cos(acos(-1)*theta/180),-sin(acos(-1)*theta/180),sin(acos(-1)*theta/180),cos(acos(-1)*theta/180);
+    cout<<"P:"<<endl;
+    cout<<P<<endl;
+    cout<<"Rotated 45:"<<endl;
+    P=r*P;
+    cout<<P<<endl;
+    cout<<"Paced (1,2):"<<endl;
+    P=P+i;
+    cout<<P<<endl;
     return 0;
 }
