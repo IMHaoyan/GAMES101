@@ -60,7 +60,7 @@ Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
         0,1,0,-(t+b)/2, 
         0,0,1,-(zNear+zFar)/2, 
         0,0,0,1;
-    projection=n*o*p;
+    projection=o*n*p;
     return projection;
 }
 
