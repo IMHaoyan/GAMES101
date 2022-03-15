@@ -48,7 +48,7 @@ Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
         0,zNear,0,0, 
         0,0,zNear+zFar,-zNear*zFar, 
         0,0,1,0;
-    float t=tan(eye_fov/2/180*acos(-1))*zNear;
+    float t=-tan(eye_fov/2/180*acos(-1))*zNear;
     float b=-t;
     float r=t*aspect_ratio;
     float l=-r;
