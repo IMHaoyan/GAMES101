@@ -12,18 +12,6 @@ eigen3/Eigen/Eigen
 
 /home/haoyan/GAMES101/pa2/global.hpp
 
-/home/haoyan/GAMES101/pa2/main.cpp
-iostream
--
-opencv2/opencv.hpp
--
-rasterizer.hpp
-/home/haoyan/GAMES101/pa2/rasterizer.hpp
-global.hpp
-/home/haoyan/GAMES101/pa2/global.hpp
-Triangle.hpp
-/home/haoyan/GAMES101/pa2/Triangle.hpp
-
 /home/haoyan/GAMES101/pa2/rasterizer.cpp
 algorithm
 -
