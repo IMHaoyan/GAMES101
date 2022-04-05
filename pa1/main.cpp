@@ -10,14 +10,13 @@ constexpr double MY_PI = 3.1415926;
 
 Matrix4f get_view_matrix(Vector3f eye_pos)
 {
-    Matrix4f view = Matrix4f::Identity();
-
+    Matrix4f view = Matrix4f::Identity();//不indenty可以吗?
     Matrix4f translate;
-    translate << 1, 0, 0, -eye_pos[0], 0, 1, 0, -eye_pos[1], 0, 0, 1,
-        -eye_pos[2], 0, 0, 0, 1;
-
+    translate << 1, 0, 0, -eye_pos[0],
+                 0, 1, 0, -eye_pos[1], 
+                 0, 0, 1,-eye_pos[2], 
+                 0, 0, 0, 1;
     view = translate * view;
-
     return view;
 }
 
@@ -28,9 +27,12 @@ Matrix4f get_model_matrix(float rotation_angle)
     // TODO: Implement this function
     // Create the model matrix for rotating the triangle around the Z axis.
     // Then return it.
-    float delta=rotation_angle;
-    float fa=acos(-1)*delta/180;
-    model<<cos(fa),-sin(fa),0,0,sin(fa),cos(fa),0,0,0,0,1,0,0,0,0,1;
+
+    float fa=MY_PI*rotation_angle/180;
+    model<<cos(fa),-sin(fa),0,0,
+        sin(fa),cos(fa),0,0,
+        0,0,1,0,
+        0,0,0,1;
     return model;
 }
 
@@ -40,27 +42,32 @@ Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     // Students will implement this function
 
     Matrix4f projection = Matrix4f::Identity();
-    Matrix4f p,o,n;
+    Matrix4f p,s,t;
     // TODO: Implement this function
     // Create the projection matrix for the given parameters.
     // Then return it.
+    
     p<< zNear,0,0,0, 
         0,zNear,0,0, 
         0,0,zNear+zFar,-zNear*zFar, 
         0,0,1,0;
-    float t=-tan(eye_fov/2/180*acos(-1))*zNear;
-    float b=-t;
-    float r=t*aspect_ratio;
-    float l=-r;
-    o<< 2/(r-l),0,0,0, 
-        0,2/(t-b),0,0, 
+
+    float top=zNear*tan(eye_fov/2/180*MY_PI);
+    float bottom=-top;
+    float right=top*aspect_ratio;
+    float left=-right;
+
+    s<< 2/(right-left),0,0,0, 
+        0,2/(top-bottom),0,0, 
         0,0,2/(zNear-zFar),0, 
         0,0,0,1;
-    n<< 1,0,0,-(r+l)/2, 
-        0,1,0,-(t+b)/2, 
+
+    t<< 1,0,0,-(right+left)/2, 
+        0,1,0,-(top+bottom)/2, 
         0,0,1,-(zNear+zFar)/2, 
         0,0,0,1;
-    projection=o*n*p;
+
+    projection=s*t*p;
     return projection;
 }
 
