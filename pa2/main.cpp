@@ -67,7 +67,7 @@ Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, f
 int main(int argc, const char** argv)
 {
     float angle = 0;
-    bool command_line = true;
+    bool command_line = false;
     string filename = "output.png";
 
     if (argc == 2)

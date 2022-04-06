@@ -111,10 +111,15 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
 
         rasterize_triangle(t);
     }
-    // downsampling
+    // downsampling 用于SSAA
+    /*
     for(int y = 0; y < height; y++) {
         for(int x = 0; x < width; x++) {
-            Vector3f color = {0, 0, 0};
+        //每个像素被分成4个小像素，我们在每个小像素上计算和存储depth_buffer和frame_buffer，最后再根据4个小像素的平均值，
+        //算出原像素的值。
+        //e.g. 假设三角形颜色是红色(255, 0, 0)，有3个小像素在三角形内，那么这个像素的sample list
+        //就是(255, 0, 0)，(255, 0, 0)，(255, 0, 0)，(0, 0, 0)，我们通过求这个sample list的平均值得到原像素的值。
+           Vector3f color = {0, 0, 0};
             float infinity = numeric_limits<float>::infinity();
             for(float j = start_point; j < 1; j+=pixel_size_sm) {
                 for(float i = start_point; i < 1; i+=pixel_size_sm) {
@@ -127,8 +132,9 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
             set_pixel(p, color/(ssaa_h*ssaa_w));
         }
     }
+    */
 }
-
+/*
 void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     auto v = t.toVector4();
 
@@ -167,9 +173,11 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
         }
     }
 }
+*/
 
-/*
-//Screen space rasterization
+//MSAA对于每个像素，我们通过三角形在这个像素的覆盖率，即它的面积，来计算原像素的值。我们先把这个像素分成4个小像素，然后
+//用有多少个小像素在三角形内，来近似这个面积。e.g. 假设三角形颜色是红色(255, 0, 0)，有3个小像素在三角形内，那么这个像素
+//最终的值就是3/4乘以(255, 0, 0)。
 void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     auto v = t.toVector4();
 
@@ -221,7 +229,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
             }
         }
     }
-}*/
+}
 void rst::rasterizer::set_model(const Matrix4f& m)
 {
     model = m;
