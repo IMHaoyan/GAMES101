@@ -90,10 +90,20 @@ namespace rst
         std::map<int, std::vector<Eigen::Vector3i>> ind_buf;
         std::map<int, std::vector<Eigen::Vector3f>> col_buf;
 
-        std::vector<Eigen::Vector3f> frame_buf;
+        std::vector<Eigen::Vector3f> frame_buf,frame_buf_ssaa;
+        ///
+        int ssaa_w = 2;
+        int ssaa_h = 2;
+        
+        // size of each sampling point
+        float pixel_size_sm = 1.0/ssaa_w; 
+        float start_point = pixel_size_sm/2.0; 
 
-        std::vector<float> depth_buf;
         int get_index(int x, int y);
+        int get_index_ssaa(int x, int y, float i, float j);
+        ///
+        std::vector<float> depth_buf,depth_buf_ssaa;
+        int get_index(float x, float y);
 
         int width, height;
 
