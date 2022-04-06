@@ -128,6 +128,7 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
         }
     }
 }
+
 void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     auto v = t.toVector4();
 
@@ -166,6 +167,61 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
         }
     }
 }
+
+/*
+//Screen space rasterization
+void rst::rasterizer::rasterize_triangle(const Triangle& t) {
+    auto v = t.toVector4();
+
+    float min_x = width;
+    float max_x = 0;
+    float min_y = height;
+    float max_y = 0;
+
+    // find out the bounding box of current triangle
+    for(int i = 0; i < 3; i++) {
+        min_x = std::min(v[i].x(), min_x);
+        max_x = std::max(v[i].x(), max_x);
+        min_y = std::min(v[i].y(), min_y);
+        max_y = std::max(v[i].y(), max_y);
+    }
+
+    // iterate through the pixel
+    for(int y = min_y; y < max_y; y++) {
+        for(int x = min_x; x < max_x; x++) {
+            int index = get_index(x, y);
+            float count = 0.0;
+            float max_count = ssaa_w*ssaa_h;
+            // iterate through the sampling points
+            for(float j = start_point; j < 1.0; j+=pixel_size_sm) {
+                for(float i = start_point; i < 1.0; i+=pixel_size_sm) {
+                    if(insideTriangle(x+i, y+j, t.v)) {
+                        count += 1.0;
+                    }
+                }
+            }
+            // find if the current pixel is inside the triangle
+            if(insideTriangle(x+0.5, y+0.5, t.v)) {
+                // if so, use the following code to get the interpolated z value.
+                auto[alpha, beta, gamma] = computeBarycentric2D(x+0.5, y+0.5, t.v);
+                float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
+                float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
+                z_interpolated *= w_reciprocal;
+
+                // set the current pixel (use the set_pixel function) 
+                // to the color of the triangle (use getColor function)
+                // if it should be painted.
+                if(z_interpolated < depth_buf[index]) {
+                    Vector3f p;
+                    p << x, y, z_interpolated;
+                    Vector3f color = t.getColor()*(count/max_count);
+                    set_pixel(p, color);
+                    depth_buf[index] = z_interpolated;
+                }   
+            }
+        }
+    }
+}*/
 void rst::rasterizer::set_model(const Matrix4f& m)
 {
     model = m;
