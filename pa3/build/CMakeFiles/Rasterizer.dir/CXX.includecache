@@ -6,33 +6,51 @@
 
 #IncludeRegexTransform: 
 
-/home/haoyan/GAMES101/pa2/Triangle.hpp
+/home/haoyan/GAMES101/pa3/Shader.hpp
 eigen3/Eigen/Eigen
 -
+Texture.hpp
+/home/haoyan/GAMES101/pa3/Texture.hpp
 
-/home/haoyan/GAMES101/pa2/global.hpp
-
-/home/haoyan/GAMES101/pa2/main.cpp
-iostream
+/home/haoyan/GAMES101/pa3/Texture.hpp
+global.hpp
+/home/haoyan/GAMES101/pa3/global.hpp
+eigen3/Eigen/Eigen
 -
 opencv2/opencv.hpp
 -
-rasterizer.hpp
-/home/haoyan/GAMES101/pa2/rasterizer.hpp
-global.hpp
-/home/haoyan/GAMES101/pa2/global.hpp
-Triangle.hpp
-/home/haoyan/GAMES101/pa2/Triangle.hpp
 
-/home/haoyan/GAMES101/pa2/rasterizer.hpp
+/home/haoyan/GAMES101/pa3/Triangle.hpp
 eigen3/Eigen/Eigen
+-
+Texture.hpp
+/home/haoyan/GAMES101/pa3/Texture.hpp
+
+/home/haoyan/GAMES101/pa3/global.hpp
+
+/home/haoyan/GAMES101/pa3/rasterizer.cpp
+algorithm
+-
+rasterizer.hpp
+/home/haoyan/GAMES101/pa3/rasterizer.hpp
+opencv2/opencv.hpp
+-
+math.h
+-
+
+/home/haoyan/GAMES101/pa3/rasterizer.hpp
+eigen3/Eigen/Eigen
+-
+optional
 -
 algorithm
 -
 global.hpp
-/home/haoyan/GAMES101/pa2/global.hpp
+/home/haoyan/GAMES101/pa3/global.hpp
+Shader.hpp
+/home/haoyan/GAMES101/pa3/Shader.hpp
 Triangle.hpp
-/home/haoyan/GAMES101/pa2/Triangle.hpp
+/home/haoyan/GAMES101/pa3/Triangle.hpp
 
 /usr/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp

@@ -134,6 +134,7 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
     }
     */
 }
+//SMAA
 /*
 void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     auto v = t.toVector4();
@@ -175,9 +176,49 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
 }
 */
 
+//无抗锯齿
+void rst::rasterizer::rasterize_triangle(const Triangle& t) {
+    auto v = t.toVector4();
+    float min_x = width;
+    float max_x = 0;
+    float min_y = height;
+    float max_y = 0;
+    // find out the bounding box of current triangle
+    for(int i = 0; i < 3; i++) {
+        min_x = std::min(v[i].x(), min_x);
+        max_x = std::max(v[i].x(), max_x);
+        min_y = std::min(v[i].y(), min_y);
+        max_y = std::max(v[i].y(), max_y);
+    }
+    // iterate through the pixel
+    for(int y = min_y; y < max_y; y++) {
+        for(int x = min_x; x < max_x; x++) {
+            int index = get_index(x, y);
+            // find if the current pixel is inside the triangle
+            if(insideTriangle(x+0.5, y+0.5, t.v)) {
+                // if so, use the following code to get the interpolated z value.
+                auto[alpha, beta, gamma] = computeBarycentric2D(x+0.5, y+0.5, t.v);
+                float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
+                float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
+                z_interpolated *= w_reciprocal;
+                // set the current pixel (use the set_pixel function) 
+                // to the color of the triangle (use getColor function)
+                // if it should be painted.
+                if(z_interpolated < depth_buf[index]) {
+                    Vector3f p;
+                    p << x, y, z_interpolated;
+                    Vector3f color = t.getColor();
+                    set_pixel(p, color);
+                    depth_buf[index] = z_interpolated;
+                }   
+            }
+        }
+    }
+}
 //MSAA对于每个像素，我们通过三角形在这个像素的覆盖率，即它的面积，来计算原像素的值。我们先把这个像素分成4个小像素，然后
 //用有多少个小像素在三角形内，来近似这个面积。e.g. 假设三角形颜色是红色(255, 0, 0)，有3个小像素在三角形内，那么这个像素
 //最终的值就是3/4乘以(255, 0, 0)。
+/*
 void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     auto v = t.toVector4();
 
@@ -229,7 +270,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
             }
         }
     }
-}
+}*/
 void rst::rasterizer::set_model(const Matrix4f& m)
 {
     model = m;
