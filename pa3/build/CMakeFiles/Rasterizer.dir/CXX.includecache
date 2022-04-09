@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+/home/haoyan/GAMES101/pa3/OBJ_Loader.h
+iostream
+-
+vector
+-
+string
+-
+fstream
+-
+math.h
+-
+
 /home/haoyan/GAMES101/pa3/Shader.hpp
 eigen3/Eigen/Eigen
 -
@@ -28,15 +40,23 @@ Texture.hpp
 
 /home/haoyan/GAMES101/pa3/global.hpp
 
-/home/haoyan/GAMES101/pa3/rasterizer.cpp
-algorithm
+/home/haoyan/GAMES101/pa3/main.cpp
+iostream
 -
-rasterizer.hpp
-/home/haoyan/GAMES101/pa3/rasterizer.hpp
 opencv2/opencv.hpp
 -
-math.h
--
+global.hpp
+/home/haoyan/GAMES101/pa3/global.hpp
+rasterizer.hpp
+/home/haoyan/GAMES101/pa3/rasterizer.hpp
+Triangle.hpp
+/home/haoyan/GAMES101/pa3/Triangle.hpp
+Shader.hpp
+/home/haoyan/GAMES101/pa3/Shader.hpp
+Texture.hpp
+/home/haoyan/GAMES101/pa3/Texture.hpp
+OBJ_Loader.h
+/home/haoyan/GAMES101/pa3/OBJ_Loader.h
 
 /home/haoyan/GAMES101/pa3/rasterizer.hpp
 eigen3/Eigen/Eigen

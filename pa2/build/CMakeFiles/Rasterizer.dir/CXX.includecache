@@ -24,6 +24,18 @@ global.hpp
 Triangle.hpp
 /home/haoyan/GAMES101/pa2/Triangle.hpp
 
+/home/haoyan/GAMES101/pa2/rasterizer.cpp
+algorithm
+-
+vector
+-
+rasterizer.hpp
+/home/haoyan/GAMES101/pa2/rasterizer.hpp
+opencv2/opencv.hpp
+-
+math.h
+-
+
 /home/haoyan/GAMES101/pa2/rasterizer.hpp
 eigen3/Eigen/Eigen
 -
