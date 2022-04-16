@@ -15,20 +15,18 @@ bool rayTriangleIntersect(const Vector3f& v0, const Vector3f& v1, const Vector3f
     Vector3f S = orig-v0;
     Vector3f S1 = crossProduct(dir, E2);
     Vector3f S2 = crossProduct(S, E1);
-
     float S1E1 = dotProduct(S1, E1);
+
     float t =  dotProduct(S2, E2) / S1E1;
     float b1 =  dotProduct(S1, S) / S1E1;
     float b2 =  dotProduct(S2, dir) / S1E1;
 
-    // 注意这里和误差值 EPSILON 比较，否则会因为精度问题，阴影下有蓝点出现。
     if(t >= 0 && b1 > -EPSILON && b2 > -EPSILON && (1.f-b1-b2) > -EPSILON) {
         tnear = t;
         u = b1;
         v = b2;
         return true;
     }
-
     return false;
 }
 
