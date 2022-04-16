@@ -1,9 +1,8 @@
 #pragma once
-
 #include "Object.hpp"
-
 #include <cstring>
-
+using namespace std;
+const float EPSILON = 0.00001;
 bool rayTriangleIntersect(const Vector3f& v0, const Vector3f& v1, const Vector3f& v2, const Vector3f& orig,
                           const Vector3f& dir, float& tnear, float& u, float& v)
 {
@@ -11,6 +10,25 @@ bool rayTriangleIntersect(const Vector3f& v0, const Vector3f& v1, const Vector3f
     // that's specified bt v0, v1 and v2 intersects with the ray (whose
     // origin is *orig* and direction is *dir*)
     // Also don't forget to update tnear, u and v.
+    Vector3f E1 = v1-v0;
+    Vector3f E2 = v2-v0;
+    Vector3f S = orig-v0;
+    Vector3f S1 = crossProduct(dir, E2);
+    Vector3f S2 = crossProduct(S, E1);
+
+    float S1E1 = dotProduct(S1, E1);
+    float t =  dotProduct(S2, E2) / S1E1;
+    float b1 =  dotProduct(S1, S) / S1E1;
+    float b2 =  dotProduct(S2, dir) / S1E1;
+
+    // 注意这里和误差值 EPSILON 比较，否则会因为精度问题，阴影下有蓝点出现。
+    if(t >= 0 && b1 > -EPSILON && b2 > -EPSILON && (1.f-b1-b2) > -EPSILON) {
+        tnear = t;
+        u = b1;
+        v = b2;
+        return true;
+    }
+
     return false;
 }
 
@@ -24,12 +42,12 @@ public:
             if (vertsIndex[i] > maxIndex)
                 maxIndex = vertsIndex[i];
         maxIndex += 1;
-        vertices = std::unique_ptr<Vector3f[]>(new Vector3f[maxIndex]);
+        vertices = unique_ptr<Vector3f[]>(new Vector3f[maxIndex]);
         memcpy(vertices.get(), verts, sizeof(Vector3f) * maxIndex);
-        vertexIndex = std::unique_ptr<uint32_t[]>(new uint32_t[numTris * 3]);
+        vertexIndex = unique_ptr<uint32_t[]>(new uint32_t[numTris * 3]);
         memcpy(vertexIndex.get(), vertsIndex, sizeof(uint32_t) * numTris * 3);
         numTriangles = numTris;
-        stCoordinates = std::unique_ptr<Vector2f[]>(new Vector2f[maxIndex]);
+        stCoordinates = unique_ptr<Vector2f[]>(new Vector2f[maxIndex]);
         memcpy(stCoordinates.get(), st, sizeof(Vector2f) * maxIndex);
     }
 
@@ -78,8 +96,8 @@ public:
         return lerp(Vector3f(0.815, 0.235, 0.031), Vector3f(0.937, 0.937, 0.231), pattern);
     }
 
-    std::unique_ptr<Vector3f[]> vertices;
+    unique_ptr<Vector3f[]> vertices;
     uint32_t numTriangles;
-    std::unique_ptr<uint32_t[]> vertexIndex;
-    std::unique_ptr<Vector2f[]> stCoordinates;
+    unique_ptr<uint32_t[]> vertexIndex;
+    unique_ptr<Vector2f[]> stCoordinates;
 };
