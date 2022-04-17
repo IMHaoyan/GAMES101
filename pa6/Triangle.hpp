@@ -215,27 +215,31 @@ inline Intersection Triangle::getIntersection(Ray ray)
     if (dotProduct(ray.direction, normal) > 0)
         return inter;
     double u, v, t_tmp = 0;
-    Vector3f pvec = crossProduct(ray.direction, e2);
-    double det = dotProduct(e1, pvec);
+    Vector3f pvec = crossProduct(ray.direction, e2);   // S1
+    double det = dotProduct(e1, pvec);                 // S1E1
     if (fabs(det) < EPSILON)
         return inter;
 
     double det_inv = 1. / det;
-    Vector3f tvec = ray.origin - v0;
-    u = dotProduct(tvec, pvec) * det_inv;
+    Vector3f tvec = ray.origin - v0;                  // S
+    u = dotProduct(tvec, pvec) * det_inv;             // b1
     if (u < 0 || u > 1)
         return inter;
-    Vector3f qvec = crossProduct(tvec, e1);
-    v = dotProduct(ray.direction, qvec) * det_inv;
+    Vector3f qvec = crossProduct(tvec, e1);           // S2
+    v = dotProduct(ray.direction, qvec) * det_inv;    // b2
     if (v < 0 || u + v > 1)
         return inter;
-    t_tmp = dotProduct(e2, qvec) * det_inv;
+    t_tmp = dotProduct(e2, qvec) * det_inv;           // t
 
     // TODO find ray triangle intersection
-
-
-
-
+    if (t_tmp < 0)
+        return inter;
+    inter.happened = true;                            // 是否相交
+    inter.coords = ray(t_tmp);                        // 交点在orig + dir * t
+    inter.normal = normal;                            // 三角形normal
+    inter.distance = t_tmp;                           // 光线长度，即t_tmp
+    inter.obj = this;                                 // 相交物体，即三角形本身
+    inter.m = m;                                      // 相交物体的材质，即三角形的材质
     return inter;
 }
 

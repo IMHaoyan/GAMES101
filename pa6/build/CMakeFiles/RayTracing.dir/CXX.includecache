@@ -6,13 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/haoyan/GAMES101/pa6/AreaLight.hpp
-Vector.hpp
-/home/haoyan/GAMES101/pa6/Vector.hpp
-Light.hpp
-/home/haoyan/GAMES101/pa6/Light.hpp
-global.hpp
-/home/haoyan/GAMES101/pa6/global.hpp
+/home/haoyan/GAMES101/pa6/BVH.cpp
+algorithm
+-
+cassert
+-
+BVH.hpp
+/home/haoyan/GAMES101/pa6/BVH.hpp
 
 /home/haoyan/GAMES101/pa6/BVH.hpp
 atomic
@@ -50,10 +50,6 @@ Vector.hpp
 Material.hpp
 /home/haoyan/GAMES101/pa6/Material.hpp
 
-/home/haoyan/GAMES101/pa6/Light.hpp
-Vector.hpp
-/home/haoyan/GAMES101/pa6/Vector.hpp
-
 /home/haoyan/GAMES101/pa6/Material.hpp
 Vector.hpp
 /home/haoyan/GAMES101/pa6/Vector.hpp
@@ -73,34 +69,6 @@ Intersection.hpp
 /home/haoyan/GAMES101/pa6/Ray.hpp
 Vector.hpp
 /home/haoyan/GAMES101/pa6/Vector.hpp
-
-/home/haoyan/GAMES101/pa6/Renderer.cpp
-fstream
--
-Scene.hpp
-/home/haoyan/GAMES101/pa6/Scene.hpp
-Renderer.hpp
-/home/haoyan/GAMES101/pa6/Renderer.hpp
-
-/home/haoyan/GAMES101/pa6/Renderer.hpp
-Scene.hpp
-/home/haoyan/GAMES101/pa6/Scene.hpp
-
-/home/haoyan/GAMES101/pa6/Scene.hpp
-vector
--
-Vector.hpp
-/home/haoyan/GAMES101/pa6/Vector.hpp
-Object.hpp
-/home/haoyan/GAMES101/pa6/Object.hpp
-Light.hpp
-/home/haoyan/GAMES101/pa6/Light.hpp
-AreaLight.hpp
-/home/haoyan/GAMES101/pa6/AreaLight.hpp
-BVH.hpp
-/home/haoyan/GAMES101/pa6/BVH.hpp
-Ray.hpp
-/home/haoyan/GAMES101/pa6/Ray.hpp
 
 /home/haoyan/GAMES101/pa6/Vector.hpp
 iostream
