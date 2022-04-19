@@ -111,9 +111,11 @@ Intersection BVHAccel::getIntersection(BVHBuildNode* node, const Ray& ray) const
     const std::array<int, 3>& dirIsNeg = {ray.direction.x < 0, ray.direction.y < 0, ray.direction.z < 0};
     
     if(!node->bounds.IntersectP(ray, invDir, dirIsNeg)) return intr;
+    //如果相交且这是一个叶子节点
     if (node->object) {
         return node->object->getIntersection(ray);
     }
+    //相交但不是叶子节点
     Intersection hit1 = getIntersection(node->left, ray);
     Intersection hit2 = getIntersection(node->right, ray);
     if(hit1.happened || hit2.happened) {

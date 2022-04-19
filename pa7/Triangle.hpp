@@ -253,7 +253,15 @@ inline Intersection Triangle::getIntersection(Ray ray)
     t_tmp = dotProduct(e2, qvec) * det_inv;
 
     // TODO find ray triangle intersection
+    if (t_tmp < 0)
+        return inter;
 
+    inter.happened = true;                            // 是否相交
+    inter.coords = ray(t_tmp);                        // 交点在orig + dir * t
+    inter.normal = normal;                            // 三角形normal
+    inter.distance = t_tmp;                           // 光线长度，即t_tmp
+    inter.obj = this;                                 // 相交物体，即三角形本身
+    inter.m = m;
     return inter;
 }
 
