@@ -70,10 +70,10 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
     }
 
     float EPLISON = 0.0001;
-
-    // sampleLight(inter, pdf_light)
+    //1.直接光照
     Intersection x_inter;float pdf_light;
-    sampleLight(x_inter, pdf_light);    
+    //找到(一个)光源
+    sampleLight(x_inter, pdf_light);
     // Get x, ws, NN, emit from inter
     Vector3f p = p_inter.coords, x = x_inter.coords;
     Vector3f ws_dir = (x - p).normalized();
@@ -83,11 +83,12 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
     Vector3f l_dir=0.f;
     Ray ws_Ray(p, ws_dir);
     Intersection ws_ray_inter = intersect(ws_Ray);
-    if(ws_ray_inter.distance - ws_distance > -EPLISON){
+    if(ws_ray_inter.distance - ws_distance > -EPLISON){//光源未被遮挡
         l_dir = emit * p_inter.m->eval(ray.direction,ws_Ray.direction, N) * dotProduct(N, ws_Ray.direction) 
         * dotProduct(NN, -ws_Ray.direction) / pow(ws_distance, 2) / pdf_light;
+        //此时cos(theta')是因为进行了积分区间的变换，由出发点的w到光源的A
     }
-
+    //2.间接光照
     Vector3f l_indir=0.f;
     if(get_random_float() > RussianRoulette) {
         return l_dir;//直接返回 此时 l_indir为 0
