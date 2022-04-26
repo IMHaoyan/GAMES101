@@ -70,7 +70,7 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
     }
 
     float EPLISON = 0.0001;
-    //1.直接光照
+    //1.直接光照. 
     Intersection x_inter;float pdf_light;
     //找到(一个)光源
     sampleLight(x_inter, pdf_light);
