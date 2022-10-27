@@ -247,13 +247,12 @@ static Eigen::Vector3f interpolate(float alpha, float beta, float gamma, const E
 
 static Eigen::Vector2f interpolate(float alpha, float beta, float gamma, const Eigen::Vector2f& vert1, const Eigen::Vector2f& vert2, const Eigen::Vector2f& vert3, float weight)
 {
-    auto u = (alpha * vert1[0] + beta * vert2[0] + gamma * vert3[0]);
-    auto v = (alpha * vert1[1] + beta * vert2[1] + gamma * vert3[1]);
-
-    u /= weight;
-    v /= weight;
-
-    return Eigen::Vector2f(u, v);
+    // auto u = (alpha * vert1[0] + beta * vert2[0] + gamma * vert3[0]);
+    // auto v = (alpha * vert1[1] + beta * vert2[1] + gamma * vert3[1]);
+    // u /= weight;
+    // v /= weight;
+    //return Eigen::Vector2f(u, v);
+    return (alpha * vert1 + beta * vert2 + gamma * vert3) / weight;
 }
 
 //Screen space rasterization

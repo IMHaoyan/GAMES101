@@ -6,6 +6,14 @@
 
 #IncludeRegexTransform: 
 
+/home/haoyan/GAMES101/pa2/Triangle.cpp
+Triangle.hpp
+/home/haoyan/GAMES101/pa2/Triangle.hpp
+algorithm
+-
+array
+-
+
 /home/haoyan/GAMES101/pa2/Triangle.hpp
 eigen3/Eigen/Eigen
 -

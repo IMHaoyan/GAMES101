@@ -68,7 +68,7 @@ int main(int argc, const char** argv)
 {
     float angle = 0;
     bool command_line = true;
-    string filename = "output.png";
+    string filename = "SSAA.png";
 
     if (argc == 2)
     {
@@ -80,12 +80,17 @@ int main(int argc, const char** argv)
 
     Vector3f eye_pos = {0,0,5};
 
-
+    //2个三角形
     vector<Vector3f> pos
             {
                     {2, 0, -2},
                     {0, 2, -2},
                     {-2, 0, -2},
+
+                    {1.5, 2, -3},
+                    {0, 2, -3},
+                    {0, -2, -3},
+
                     {3.5, -1, -5},
                     {2.5, 1.5, -5},
                     {-1, 0.5, -5}
@@ -94,7 +99,8 @@ int main(int argc, const char** argv)
     vector<Vector3i> ind
             {
                     {0, 1, 2},
-                    {3, 4, 5}
+                    {3, 4, 5},
+                    {6, 7, 8},
             };
 
     vector<Vector3f> cols
@@ -102,6 +108,11 @@ int main(int argc, const char** argv)
                     {217.0, 238.0, 185.0},
                     {217.0, 238.0, 185.0},
                     {217.0, 238.0, 185.0},
+
+                    {219.0, 163.0, 206.0},
+                    {219.0, 163.0, 206.0},
+                    {219.0, 163.0, 206.0},
+
                     {185.0, 217.0, 238.0},
                     {185.0, 217.0, 238.0},
                     {185.0, 217.0, 238.0}

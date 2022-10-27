@@ -189,8 +189,6 @@ Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
     return result_color * 255.f;
 }
 
-
-
 Vector3f displacement_fragment_shader(const fragment_shader_payload& payload)
 {
     
@@ -243,7 +241,6 @@ Vector3f displacement_fragment_shader(const fragment_shader_payload& payload)
     
     return result_color * 255.f;
 }
-
 
 Vector3f bump_fragment_shader(const fragment_shader_payload& payload)
 {
@@ -334,6 +331,7 @@ int main(int argc, const char** argv)
 
         if (argc == 3 && string(argv[2]) == "texture")
         {
+            filename = "texture.png";
             cout << "Rasterizing using the texture shader\n";
             active_shader = texture_fragment_shader;
             texture_path = "spot_texture.png";
@@ -341,21 +339,25 @@ int main(int argc, const char** argv)
         }
         else if (argc == 3 && string(argv[2]) == "normal")
         {
+            filename = "normal.png";
             cout << "Rasterizing using the normal shader\n";
             active_shader = normal_fragment_shader;
         }
         else if (argc == 3 && string(argv[2]) == "phong")
         {
+            filename = "phong.png";
             cout << "Rasterizing using the phong shader\n";
             active_shader = phong_fragment_shader;
         }
         else if (argc == 3 && string(argv[2]) == "bump")
         {
+            filename = "bump.png";
             cout << "Rasterizing using the bump shader\n";
             active_shader = bump_fragment_shader;
         }
         else if (argc == 3 && string(argv[2]) == "displacement")
         {
+            filename = "displacement.png";
             cout << "Rasterizing using the bump shader\n";
             active_shader = displacement_fragment_shader;
         }

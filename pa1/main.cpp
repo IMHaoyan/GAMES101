@@ -10,7 +10,7 @@ constexpr double MY_PI = 3.1415926;
 
 Matrix4f get_view_matrix(Vector3f eye_pos)
 {
-    Matrix4f view = Matrix4f::Identity();//不indenty可以吗?
+    Matrix4f view ;
     Matrix4f translate;
     translate << 1, 0, 0, -eye_pos[0],
                  0, 1, 0, -eye_pos[1], 
