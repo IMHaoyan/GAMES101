@@ -32,8 +32,7 @@ inline float get_random_float()
 {
     static random_device dev;
     static mt19937 rng(dev());
-    static uniform_real_distribution<float> dist(0.f, 1.f); // distribution in range [1, 6]
-
+    static uniform_real_distribution<float> dist(0.f, 1.f); 
     return dist(rng);
 }
 
