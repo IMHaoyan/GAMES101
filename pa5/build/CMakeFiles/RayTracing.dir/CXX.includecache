@@ -16,6 +16,18 @@ Vector.hpp
 global.hpp
 /home/haoyan/GAMES101/pa5/global.hpp
 
+/home/haoyan/GAMES101/pa5/Renderer.cpp
+fstream
+-
+Vector.hpp
+/home/haoyan/GAMES101/pa5/Vector.hpp
+Renderer.hpp
+/home/haoyan/GAMES101/pa5/Renderer.hpp
+Scene.hpp
+/home/haoyan/GAMES101/pa5/Scene.hpp
+optional
+-
+
 /home/haoyan/GAMES101/pa5/Renderer.hpp
 Scene.hpp
 /home/haoyan/GAMES101/pa5/Scene.hpp

@@ -122,7 +122,7 @@ optional<hit_payload> trace(
 // at the intersection point.
 // [/comment]
 Vector3f castRay(const Vector3f &orig, const Vector3f &dir, const Scene& scene,int depth)
-{
+{//ray_color
     if (depth > scene.maxDepth) {
         return Vector3f(0.0,0.0,0.0);
     }
@@ -161,7 +161,7 @@ Vector3f castRay(const Vector3f &orig, const Vector3f &dir, const Scene& scene,i
                 hitColor = castRay(reflectionRayOrig, reflectionDirection, scene, depth + 1) * kr;
                 break;
             }
-            default:
+            default:    //DIFFUSE_AND_GLOSSY
             {
                 // [comment]
                 // We use the Phong illumation model int the default case. The phong model
@@ -183,8 +183,8 @@ Vector3f castRay(const Vector3f &orig, const Vector3f &dir, const Scene& scene,i
                     float LdotN = max(0.f, dotProduct(lightDir, N));
                     // is the point in shadow, and is the nearest occluding object closer to the object than the light itself?
                     auto shadow_res = trace(shadowPointOrig, lightDir, scene.get_objects());
+                    //此处tNear即代表长度  因为光方向的模为1 
                     bool inShadow = shadow_res && (shadow_res->tNear * shadow_res->tNear < lightDistance2);
-
                     lightAmt += inShadow ? 0 : light->intensity * LdotN;
                     Vector3f reflectionDirection = reflect(-lightDir, N);
 
@@ -192,7 +192,8 @@ Vector3f castRay(const Vector3f &orig, const Vector3f &dir, const Scene& scene,i
                         payload->hit_obj->specularExponent) * light->intensity;
                 }
 
-                hitColor = lightAmt * payload->hit_obj->evalDiffuseColor(st) * payload->hit_obj->Kd + specularColor * payload->hit_obj->Ks;
+                hitColor = lightAmt * payload->hit_obj->evalDiffuseColor(st) * payload->hit_obj->Kd//漫反射
+                            + specularColor * payload->hit_obj->Ks;//高光项
                 break;
             }
         }
@@ -220,17 +221,13 @@ void Renderer::Render(const Scene& scene)
     {
         for (int i = 0; i < scene.width; ++i)
         {
-            // generate primary ray direction
-            float x;
-            float y;
             // TODO: Find the x and y positions of the current pixel to get the direction
             // vector that passes through it.
             // Also, don't forget to multiply both of them with the variable *scale*, and
             // x (horizontal) variable with the *imageAspectRatio*            
-            x = (2.f*((i+0.5)/scene.width)-1)*scale*imageAspectRatio;
-            y = (1-2.f*((j+0.5)/scene.height))*scale;
-            Vector3f dir = Vector3f(x, y, -1); // Don't forget to normalize this direction!
-            dir=normalize(dir);
+            float x = (2.f*((i+0.5)/scene.width)-1)*scale*imageAspectRatio;
+            float y = (1-2.f*((j+0.5)/scene.height))*scale;
+            Vector3f dir = normalize(Vector3f(x, y, -1)); // Don't forget to normalize this direction!
             framebuffer[m++] = castRay(eye_pos, dir, scene, 0);
         }
         UpdateProgress((j+1) / (float)scene.height);
