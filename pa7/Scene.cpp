@@ -62,7 +62,7 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
 {
     // TO DO Implement Path Tracing Algorithm here
     Intersection p_inter = intersect(ray);
-    if (!p_inter.happened) {
+    if (!p_inter.happened||depth>maxDepth) {
         return Vector3f();
     }
     if (p_inter.m->hasEmission()) {//光源处
@@ -81,13 +81,14 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
     Vector3f N = p_inter.normal.normalized(), NN = x_inter.normal.normalized();
     Vector3f emit = x_inter.emit;
     Vector3f l_dir=0.f;
-    Ray ws_Ray(p, ws_dir);
-    Intersection ws_ray_inter = intersect(ws_Ray);
-    if(ws_ray_inter.distance - ws_distance > -EPLISON){//光源未被遮挡
-        l_dir = emit * p_inter.m->eval(ray.direction,ws_Ray.direction, N) * dotProduct(N, ws_Ray.direction) 
-        * dotProduct(NN, -ws_Ray.direction) / pow(ws_distance, 2) / pdf_light;
-        //此时cos(theta')是因为进行了积分区间的变换，由出发点的w到光源的A
-    }
+    // Ray ws_Ray(p, ws_dir);
+    // Intersection ws_ray_inter = intersect(ws_Ray);
+    // if(ws_ray_inter.distance - ws_distance > -EPLISON){//光源未被遮挡
+    //     l_dir = emit * p_inter.m->eval(ray.direction,ws_Ray.direction, N) 
+    //     * dotProduct(N, ws_Ray.direction) * dotProduct(NN, -ws_Ray.direction) 
+    //     /(ws_distance*ws_distance) / pdf_light;
+    //     //此时cos(theta')是因为进行了积分区间的变换，由出发点的w到光源的A
+    // }
     //2.间接光照
     Vector3f l_indir=0.f;
     if(get_random_float() > RussianRoulette) {
@@ -96,9 +97,11 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
     Vector3f wi_dir = p_inter.m->sample(ray.direction, N).normalized();
     Ray wi_Ray(p,wi_dir);
     Intersection wi_ray_inter = intersect(wi_Ray);
-    if(wi_ray_inter.happened && !wi_ray_inter.m->hasEmission()){
-        l_indir = castRay(wi_Ray, depth+1) * p_inter.m->eval(ray.direction,wi_Ray.direction, N) *
-         dotProduct(N, wi_Ray.direction) / p_inter.m->pdf(ray.direction, wi_Ray.direction, N) / RussianRoulette;
+    if(wi_ray_inter.happened ){//&& !wi_ray_inter.m->hasEmission()
+        l_indir = castRay(wi_Ray, depth+1) * p_inter.m->eval(ray.direction,wi_Ray.direction, N) 
+        * dotProduct(N, wi_Ray.direction) 
+        / p_inter.m->pdf(ray.direction, wi_Ray.direction, N) 
+        / RussianRoulette;
     }
     return l_dir + l_indir;
 }

@@ -9,7 +9,7 @@
 // depth, field-of-view, etc.). We then call the render function().
 int main()
 {
-    Scene scene(1280, 960);
+    Scene scene(800, 800);
 
     auto sph1 = std::make_unique<Sphere>(Vector3f(-1, 0, -12), 2);
     sph1->materialType = DIFFUSE_AND_GLOSSY;
@@ -34,6 +34,6 @@ int main()
     
     Renderer r;
     r.Render(scene);
-
+    cout<<endl;
     return 0;
 }
