@@ -123,7 +123,7 @@ optional<hit_payload> trace(
 // [/comment]
 Vector3f castRay(const Vector3f &orig, const Vector3f &dir, const Scene& scene,int depth)
 {//ray_color
-    if (depth > scene.maxDepth) {
+    if (depth<=0) { //depth为光线数
         return Vector3f(0.0,0.0,0.0);
     }
 
@@ -145,8 +145,8 @@ Vector3f castRay(const Vector3f &orig, const Vector3f &dir, const Scene& scene,i
                 Vector3f refractionRayOrig = (dotProduct(refractionDirection, N) < 0) ?
                                              hitPoint - N * scene.epsilon :
                                              hitPoint + N * scene.epsilon;
-                Vector3f reflectionColor = castRay(reflectionRayOrig, reflectionDirection, scene, depth + 1);
-                Vector3f refractionColor = castRay(refractionRayOrig, refractionDirection, scene, depth + 1);
+                Vector3f reflectionColor = castRay(reflectionRayOrig, reflectionDirection, scene, depth -1);
+                Vector3f refractionColor = castRay(refractionRayOrig, refractionDirection, scene, depth -1);
                 float kr = fresnel(dir, N, payload->hit_obj->ior);
                 hitColor = reflectionColor * kr + refractionColor * (1 - kr);
                 break;
@@ -158,7 +158,7 @@ Vector3f castRay(const Vector3f &orig, const Vector3f &dir, const Scene& scene,i
                 Vector3f reflectionRayOrig = (dotProduct(reflectionDirection, N) < 0) ?
                                              hitPoint + N * scene.epsilon :
                                              hitPoint - N * scene.epsilon;
-                hitColor = castRay(reflectionRayOrig, reflectionDirection, scene, depth + 1) * kr;
+                hitColor = castRay(reflectionRayOrig, reflectionDirection, scene, depth-1) * kr;
                 break;
             }
             default:    //DIFFUSE_AND_GLOSSY
@@ -228,7 +228,8 @@ void Renderer::Render(const Scene& scene)
             float x = (2.f*((i+0.5)/scene.width)-1)*scale*imageAspectRatio;
             float y = (1-2.f*((j+0.5)/scene.height))*scale;
             Vector3f dir = normalize(Vector3f(x, y, -1)); // Don't forget to normalize this direction!
-            framebuffer[m++] = castRay(eye_pos, dir, scene, 0);
+            int depth = 5;
+            framebuffer[m++] = castRay(eye_pos, dir, scene, depth);
         }
         UpdateProgress((j+1) / (float)scene.height);
     }
