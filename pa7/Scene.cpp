@@ -88,7 +88,7 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
         * dotProduct(NN, -ws_Ray.direction) / pow(ws_distance, 2) / pdf_light;
         //此时cos(theta')是因为进行了积分区间的变换，由出发点的w到光源的A
     }
-    float _RussianRoulette = depth > 5 ? RussianRoulette: 1.0;
+    float _RussianRoulette = depth > maxDepth ? RussianRoulette: 1.0;
     //float _RussianRoulette = RussianRoulette;
     //2.间接光照
     Vector3f l_indir=0.f;
@@ -99,9 +99,9 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
     Ray wi_Ray(p,wi_dir);
     Intersection wi_ray_inter = intersect(wi_Ray);
     if(wi_ray_inter.happened && !wi_ray_inter.m->hasEmission()){
-        l_indir = castRay(wi_Ray, depth+1) * p_inter.m->eval(ray.direction,wi_Ray.direction, N) *
-         dotProduct(N, wi_Ray.direction) 
-         / p_inter.m->pdf(ray.direction, wi_Ray.direction, N) / _RussianRoulette;
+        l_indir = castRay(wi_Ray, depth+1) * p_inter.m->eval(ray.direction,wi_Ray.direction, N)
+            *dotProduct(N, wi_Ray.direction) 
+            / p_inter.m->pdf(ray.direction, wi_Ray.direction, N) / _RussianRoulette;
     }
     return l_dir + l_indir;
 }
