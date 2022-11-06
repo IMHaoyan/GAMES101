@@ -7,7 +7,7 @@
 
 #include "Vector.hpp"
 
-enum MaterialType { DIFFUSE, SPECULAR };
+enum MaterialType { DIFFUSE, SPECULAR, GLASS };
 
 class Material{
 private:
@@ -148,7 +148,11 @@ Vector3f Material::sample(const Vector3f &wi, const Vector3f &N){
             return reflect(wi, N);
             break;
         }
-        
+        case GLASS:
+        {
+            return refract(wi, N, 3);
+            break;
+        }
     }
     return Vector3f();
 }
@@ -165,6 +169,11 @@ float Material::pdf(const Vector3f &wi, const Vector3f &wo, const Vector3f &N){
             break;
         }
         case SPECULAR:
+        {
+            return 1.0f;
+            break;
+        }
+        case GLASS:
         {
             return 1.0f;
             break;
@@ -188,6 +197,11 @@ Vector3f Material::eval(const Vector3f &wi, const Vector3f &wo, const Vector3f &
             break;
         }
         case SPECULAR:
+        {
+            return Vector3f(1.0f, 1.0f, 1.0f);
+            break;
+        }
+        case GLASS:
         {
             return Vector3f(1.0f, 1.0f, 1.0f);
             break;

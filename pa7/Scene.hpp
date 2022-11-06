@@ -12,7 +12,7 @@
 #include "BVH.hpp"
 #include "Ray.hpp"
 
-#define spp 50
+#define spp 500
 #define maxDepth 5
 #define RussianRoulette 0.8
 #define output "okok.ppm"

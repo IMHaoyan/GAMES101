@@ -27,14 +27,16 @@ int main(int argc, char** argv)
     
     Material* specular = new Material(SPECULAR, Vector3f(0.0f));
     specular->Kd = Vector3f(1.f, 1.f, 1.f);
-    
+    Material* glass = new Material(GLASS, Vector3f(0.0f));
+    glass->Kd = Vector3f(1.f, 1.f, 1.f);
+
     MeshTriangle floor("../models/cornellbox/floor.obj", white);
     MeshTriangle shortbox("../models/cornellbox/shortbox.obj", white);
     MeshTriangle tallbox("../models/cornellbox/tallbox.obj", white);
     MeshTriangle left("../models/cornellbox/left.obj", red);
     MeshTriangle right("../models/cornellbox/right.obj", green);
     MeshTriangle light_("../models/cornellbox/light.obj", light);
-    Sphere sphere((Vector3f(395,100,300)),100.0,white);
+    Sphere sphere((Vector3f(420,100,300)),100.0,glass);
     Sphere sphere1((Vector3f(157,100,300)),100.0,specular);
     
     scene.Add(&floor);

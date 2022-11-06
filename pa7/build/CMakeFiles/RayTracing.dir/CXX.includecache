@@ -14,14 +14,6 @@ Light.hpp
 global.hpp
 /home/haoyan/GAMES101/pa7/global.hpp
 
-/home/haoyan/GAMES101/pa7/BVH.cpp
-algorithm
--
-cassert
--
-BVH.hpp
-/home/haoyan/GAMES101/pa7/BVH.hpp
-
 /home/haoyan/GAMES101/pa7/BVH.hpp
 atomic
 -
