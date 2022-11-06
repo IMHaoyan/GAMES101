@@ -12,10 +12,10 @@
 #include "BVH.hpp"
 #include "Ray.hpp"
 
-#define spp 500
+#define spp 50
 #define maxDepth 5
 #define RussianRoulette 0.8
-#define output "okok.ppm"
+#define output "micro.ppm"
 
 class Scene
 {
