@@ -98,10 +98,14 @@ Vector3f Scene::castRay(const Ray &ray, int depth) const
     Vector3f wi_dir = p_inter.m->sample(ray.direction, N).normalized();
     Ray wi_Ray(p,wi_dir);
     Intersection wi_ray_inter = intersect(wi_Ray);
+    float pdf = p_inter.m->pdf(ray.direction, wi_Ray.direction, N);
+    if(pdf < EPLISON){
+        return l_dir;
+    }
     if(wi_ray_inter.happened && !wi_ray_inter.m->hasEmission()){
         l_indir = castRay(wi_Ray, depth+1) * p_inter.m->eval(ray.direction,wi_Ray.direction, N)
             *dotProduct(N, wi_Ray.direction) 
-            / p_inter.m->pdf(ray.direction, wi_Ray.direction, N) / _RussianRoulette;
+            / pdf / _RussianRoulette;
     }
     return l_dir + l_indir;
 }

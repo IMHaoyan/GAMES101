@@ -37,7 +37,7 @@ class Material {
         if (cosi < 0) {
             cosi = -cosi;
         } else {
-            std::swap(etai, etat);
+            swap(etai, etat);
             n = -N;
         }
         float eta = etai / etat;
@@ -54,40 +54,14 @@ class Material {
     // \param ior is the material refractive index
     //
     // \param[out] kr is the amount of light reflected
-    void fresnel(const Vector3f& I,
-                 const Vector3f& N,
-                 const float& ior,
-                 float& kr) const {
-        float cosi = clamp(-1, 1, dotProduct(I, N));
-        float etai = 1, etat = ior;
-        if (cosi > 0) {
-            std::swap(etai, etat);
-        }
-        // Compute sini using Snell's law
-        float sint = etai / etat * sqrtf(std::max(0.f, 1 - cosi * cosi));
-        // Total internal reflection
-        if (sint >= 1) {
-            kr = 1;
-        } else {
-            float cost = sqrtf(std::max(0.f, 1 - sint * sint));
-            cosi = fabsf(cosi);
-            float Rs = ((etat * cosi) - (etai * cost)) /
-                       ((etat * cosi) + (etai * cost));
-            float Rp = ((etai * cosi) - (etat * cost)) /
-                       ((etai * cosi) + (etat * cost));
-            kr = (Rs * Rs + Rp * Rp) / 2;
-        }
-        // As a consequence of the conservation of energy, transmittance is
-        // given by: kt = 1 - kr;
-    }
-
+    
     Vector3f toWorld(const Vector3f& a, const Vector3f& N) {
         Vector3f B, C;
-        if (std::fabs(N.x) > std::fabs(N.y)) {
-            float invLen = 1.0f / std::sqrt(N.x * N.x + N.z * N.z);
+        if (fabs(N.x) > fabs(N.y)) {
+            float invLen = 1.0f / sqrt(N.x * N.x + N.z * N.z);
             C = Vector3f(N.z * invLen, 0.0f, -N.x * invLen);
         } else {
-            float invLen = 1.0f / std::sqrt(N.y * N.y + N.z * N.z);
+            float invLen = 1.0f / sqrt(N.y * N.y + N.z * N.z);
             C = Vector3f(0.0f, N.z * invLen, -N.y * invLen);
         }
         B = crossProduct(C, N);
@@ -118,22 +92,49 @@ class Material {
     inline Vector3f eval(const Vector3f& wi,
                          const Vector3f& wo,
                          const Vector3f& N);
+
+    float fresnel(const Vector3f& I,
+                 const Vector3f& N,
+                 const float& ior) const {
+        float cosi = clamp(-1, 1, dotProduct(I, N));
+        float etai = 1, etat = ior;
+        if (cosi > 0) {
+            swap(etai, etat);
+        }
+        // Compute sini using Snell's law
+        float sint = etai / etat * sqrtf(max(0.f, 1 - cosi * cosi));
+        // Total internal reflection
+        if (sint >= 1) {
+            return 1.0;
+        } else {
+            float cost = sqrtf(max(0.f, 1 - sint * sint));
+            cosi = fabsf(cosi);
+            float Rs = ((etat * cosi) - (etai * cost)) /
+                       ((etat * cosi) + (etai * cost));
+            float Rp = ((etai * cosi) - (etat * cost)) /
+                       ((etai * cosi) + (etat * cost));
+            return (Rs * Rs + Rp * Rp) / 2;
+        }
+        // As a consequence of the conservation of energy, transmittance is
+        // given by: kt = 1 - kr;
+    }
+
     float DistributionGGX(Vector3f N, Vector3f H, float roughness) {
         float a = roughness * roughness;
         float a2 = a * a;
-        float NdotH = std::max(dotProduct(N, H), 0.0f);
+        float NdotH = max(dotProduct(N, H), 0.0f);
         float NdotH2 = NdotH * NdotH;
 
         float nom = a2;
         float denom = (NdotH2 * (a2 - 1.0) + 1.0);
         denom = M_PI * denom * denom;
 
-        return nom /
-               std::max(denom, 0.0000001f);  // prevent divide by zero for
-                                             // roughness=0.0 and NdotH=1.0
+        return nom /max(denom, 0.0000001f);  
+        // prevent divide by zero for
+        // roughness=0.0 and NdotH=1.0
     }
 
-    float GeometrySchlickGGX(float NdotV, float roughness) {
+    float SchlickGGX(float NdotV, float roughness) {
         float r = (roughness + 1.0);
         float k = (r * r) / 8.0;
 
@@ -144,10 +145,10 @@ class Material {
     }
 
     float GeometrySmith(Vector3f N, Vector3f V, Vector3f L, float roughness) {
-        float NdotV = std::max(dotProduct(N, V), 0.0f);
-        float NdotL = std::max(dotProduct(N, L), 0.0f);
-        float ggx2 = GeometrySchlickGGX(NdotV, roughness);
-        float ggx1 = GeometrySchlickGGX(NdotL, roughness);
+        float NdotV = max(dotProduct(N, V), 0.0f);
+        float NdotL = max(dotProduct(N, L), 0.0f);
+        float ggx2 = SchlickGGX(NdotV, roughness);
+        float ggx1 = SchlickGGX(NdotL, roughness);
 
         return ggx1 * ggx2;
     }
@@ -182,9 +183,9 @@ Vector3f Material::sample(const Vector3f& wi, const Vector3f& N) {
         case DIFFUSE: {
             // uniform sample on the hemisphere
             float x_1 = get_random_float(), x_2 = get_random_float();
-            float z = std::fabs(1.0f - 2.0f * x_1);
-            float r = std::sqrt(1.0f - z * z), phi = 2 * M_PI * x_2;
-            Vector3f localRay(r * std::cos(phi), r * std::sin(phi), z);
+            float z = fabs(1.0f - 2.0f * x_1);
+            float r = sqrt(1.0f - z * z), phi = 2 * M_PI * x_2;
+            Vector3f localRay(r * cos(phi), r * sin(phi), z);
             return toWorld(localRay, N);
 
             break;
@@ -201,9 +202,9 @@ Vector3f Material::sample(const Vector3f& wi, const Vector3f& N) {
         case Microfacet: {
             // uniform sample on the hemisphere
             float x_1 = get_random_float(), x_2 = get_random_float();
-            float z = std::fabs(1.0f - 2.0f * x_1);
-            float r = std::sqrt(1.0f - z * z), phi = 2 * M_PI * x_2;
-            Vector3f localRay(r * std::cos(phi), r * std::sin(phi), z);
+            float z = fabs(1.0f - 2.0f * x_1);
+            float r = sqrt(1.0f - z * z), phi = 2 * M_PI * x_2;
+            Vector3f localRay(r * cos(phi), r * sin(phi), z);
             return toWorld(localRay, N);
 
             break;
@@ -268,27 +269,19 @@ Vector3f Material::eval(const Vector3f& wi,
             // Disney PBR 方案
             float cosalpha = dotProduct(N, wo);
             if (cosalpha > 0.0f) {
-                float roughness = 0.35;
+                float roughness = 0.35, etat =1.85;
 
                 Vector3f V = -wi;
                 Vector3f L = wo;
                 Vector3f H = normalize(V + L);
-
-                // 计算 distribution of normals: D
                 float D = DistributionGGX(N, H, roughness);
-
-                // 计算 shadowing masking term: G
                 float G = GeometrySmith(N, V, L, roughness);
-
-                // 计算 fresnel 系数: F
-                float F;
-                float etat = 1.85;
-                fresnel(wi, N, etat, F);
+                float F= fresnel(wi, N, etat);
 
                 Vector3f nominator = D * G * F;
-                float denominator = 4 * std::max(dotProduct(N, V), 0.0f) *
-                                    std::max(dotProduct(N, L), 0.0f);
-                Vector3f specular = nominator / std::max(denominator, 0.001f);
+                float denominator = 4 * max(dotProduct(N, V), 0.0f) *
+                                    max(dotProduct(N, L), 0.0f);
+                Vector3f specular = nominator / max(denominator, 0.001f);
 
                 // 能量守恒
                 float ks_ = F;
@@ -299,7 +292,8 @@ Vector3f Material::eval(const Vector3f& wi,
                 // 因为在 specular
                 // 项里已经考虑了折射部分的比例：F，所以折射部分不需要再乘以 ks_
                 // （ks_ * Ks * specular）
-                return Ks * specular + kd_ * Kd * diffuse;
+                //return kd_ * Kd * diffuse + Ks * specular;
+                return (1.0 - F) * Kd * diffuse + Ks * specular;
             } else
                 return Vector3f(0.0f);
             break;
