@@ -14,6 +14,14 @@ Light.hpp
 global.hpp
 /home/haoyan/GAMES101/pa7/global.hpp
 
+/home/haoyan/GAMES101/pa7/BVH.cpp
+algorithm
+-
+cassert
+-
+BVH.hpp
+/home/haoyan/GAMES101/pa7/BVH.hpp
+
 /home/haoyan/GAMES101/pa7/BVH.hpp
 atomic
 -
@@ -88,7 +96,23 @@ Intersection.hpp
 Vector.hpp
 /home/haoyan/GAMES101/pa7/Vector.hpp
 
+/home/haoyan/GAMES101/pa7/Renderer.cpp
+fstream
+-
+Scene.hpp
+/home/haoyan/GAMES101/pa7/Scene.hpp
+Renderer.hpp
 /home/haoyan/GAMES101/pa7/Renderer.hpp
+thread
+-
+mutex
+-
+
+/home/haoyan/GAMES101/pa7/Renderer.hpp
+Scene.hpp
+/home/haoyan/GAMES101/pa7/Scene.hpp
+
+/home/haoyan/GAMES101/pa7/Scene.cpp
 Scene.hpp
 /home/haoyan/GAMES101/pa7/Scene.hpp
 

@@ -74,6 +74,7 @@ class Material {
     Vector3f m_emission;
     float ior;
     Vector3f Kd, Ks;
+    float metallic = 0.0;
     float specularExponent;
     // Texture tex;
 
@@ -287,7 +288,7 @@ Vector3f Material::eval(const Vector3f& wi,
                 float ks_ = F;
                 float kd_ = 1.0f - ks_;
 
-                Vector3f diffuse = 1.0f / M_PI;
+                Vector3f diffuse = (1.0f-metallic) / M_PI;
 
                 // 因为在 specular
                 // 项里已经考虑了折射部分的比例：F，所以折射部分不需要再乘以 ks_

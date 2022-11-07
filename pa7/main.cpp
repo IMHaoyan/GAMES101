@@ -29,16 +29,18 @@ int main(int argc, char** argv)
     Material* Micro_white = new Material(Microfacet, Vector3f(0.0f));
     Micro_white->Kd = Vector3f(0.725f, 0.71f, 0.68f);
     Micro_white->Ks = Vector3f(sp,sp,sp);
+    
+    Material* microfacet = new Material(Microfacet, Vector3f(0.0f));
+    microfacet->Kd = Vector3f(0.95,0.93,0.88);
+    microfacet->Ks = Vector3f(sp,sp,sp);
 
-    // Material* microfacet0 = new Material(Microfacet, Vector3f(0.0f));
-   
-    // microfacet0->Kd = Vector3f(0.95,0.93,0.88);
-    // microfacet0->Ks = Vector3f(sp,sp,sp);
+    Material* microfacet1 = new Material(Microfacet, Vector3f(0.0f));
+    microfacet1->Kd = Vector3f(0.95,0.93,0.88);
+    microfacet1->Ks = Vector3f(sp,sp,sp);microfacet1->metallic = 0.4;
 
-    // Material* microfacet = new Material(Microfacet, Vector3f(0.0f));
-    // sp = 0.5f;
-    // microfacet->Kd = Vector3f(1.0,0.86,0.57);
-    // microfacet->Ks = Vector3f(sp,sp,sp);
+    Material* microfacet2 = new Material(Microfacet, Vector3f(0.0f));
+    microfacet2->Kd = Vector3f(0.95,0.93,0.88);
+    microfacet2->Ks = Vector3f(sp,sp,sp);microfacet2->metallic = 0.9;
 
 
     MeshTriangle floor("../models/cornellbox/floor.obj", Micro_white);
@@ -48,19 +50,19 @@ int main(int argc, char** argv)
     MeshTriangle right("../models/cornellbox/right.obj", green);
     MeshTriangle light_("../models/cornellbox/light.obj", light);
 
-    // Sphere sphere((Vector3f(395,100,300)),50.0,microfacet);
-    // Sphere sphere2((Vector3f(276,100,300)),50.0,microfacet);
-    // Sphere sphere1((Vector3f(157,100,300)),50.0,microfacet0);
+    Sphere sphere((Vector3f(395,100,300)),50.0,microfacet);
+    Sphere sphere1((Vector3f(276,100,300)),50.0,microfacet1);
+    Sphere sphere2((Vector3f(157,100,300)),50.0,microfacet2);
 
     scene.Add(&floor);
     scene.Add(&left);
     scene.Add(&right);
     scene.Add(&light_);
-    scene.Add(&tallbox);
-    scene.Add(&shortbox);
-    // scene.Add(&sphere);
-    // scene.Add(&sphere1);
-    // scene.Add(&sphere2);
+    //scene.Add(&tallbox);
+    //scene.Add(&shortbox);
+    scene.Add(&sphere);
+    scene.Add(&sphere1);
+    scene.Add(&sphere2);
     scene.buildBVH();
 
     Renderer r;
